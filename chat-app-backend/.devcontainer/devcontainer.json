@@ -1,0 +1,42 @@
+{
+  "name": "chat-app_backend",
+  "dockerComposeFile": ["../docker-compose.yml"],
+  "workspaceFolder": "/chat-backend",
+  "runServices": [],
+  "shutdownAction": "stopCompose",
+  "service": "chat-backend",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/common-utils:2": {},
+    "ghcr.io/devcontainers-contrib/features/zsh-plugins:0": {}
+  },
+  "postCreateCommand": "echo DONE!",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ExodiusStudios.comment-anchors",
+        "mikestead.dotenv",
+        "EditorConfig.EditorConfig",
+        "usernamehw.errorlens",
+        "mkxml.vscode-filesize",
+        "christian-kohler.path-intellisense",
+        "esbenp.prettier-vscode",
+        "eamodio.gitlens",
+        "dbaeumer.vscode-eslint"
+      ],
+      "settings": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "prettier.prettierPath": "/backend/node_modules/prettier",
+        "editor.formatOnSave": true,
+        "editor.tabSize": 2,
+        "files.eol": "\n",
+        "editor.trimAutoWhitespace": true,
+        "explorer.autoRevealExclude": {
+          "**/node_modules": true,
+          "**/bower_components": true
+        },
+        "explorer.compactFolders": false
+      }
+    }
+  }
+}

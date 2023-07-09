@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  chat-backend:
+    container_name: "chat-app_backend"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    network_mode: host
+    tty: true
+  chat-db:
+    container_name: "chat-app_db"
+    image: postgres:15.2-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=chat-app
+    ports:
+      - "4100:5432"
+    volumes:
+      - chat-app_db:/var/lib/postgresql/data
+volumes:
+  chat-app_db:
+    driver: local
