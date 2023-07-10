@@ -38,7 +38,8 @@ export class ChatsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
 
   @SubscribeMessage(EVENTS.leave_room)
   handleRoomLeave(client: Socket, room: string) {
-    console.log(`chao room_${room}`);
+    console.log("[WEB_SOCKETS]: USER LEAVE:", usernameStore.getUsernameById(client.id));
+    usernameStore.removeUser(client.id);
     client.leave(this.roomName);
   }
 }
