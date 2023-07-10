@@ -26,7 +26,7 @@
       ],
       "settings": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
-        "prettier.prettierPath": "/backend/node_modules/prettier",
+        "prettier.prettierPath": "/chat-backend/node_modules/prettier",
         "editor.formatOnSave": true,
         "editor.tabSize": 2,
         "files.eol": "\n",

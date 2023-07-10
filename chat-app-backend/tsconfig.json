@@ -13,6 +13,9 @@
     "rootDir": "./",
     "baseUrl": "./",
     "skipLibCheck": true,
-    "incremental": true
+    "incremental": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   }
 }
