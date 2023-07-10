@@ -1,12 +1,16 @@
 import { OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
 import { Namespace, Socket } from "socket.io";
 
+import { EVENTS, SOCKET_EVENT } from "@/types";
+import usernameStore from "@/store/username-store";
+
 @WebSocketGateway(4010, {
   namespace: "chat",
   cors: { origin: "*" },
 })
 export class ChatsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() server: Namespace;
+  private readonly roomName = "standard_room" as const;
 
   afterInit(server: any) {
     console.log("[WEB_SOCKETS]: web socker init...");
@@ -20,21 +24,21 @@ export class ChatsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     console.log("[WEB_SOCKETS]: Disconnection!");
   }
 
-  @SubscribeMessage("event_join")
-  handleJoinRoom(client: Socket, room: string) {
-    client.join(`room_${room}`);
+  @SubscribeMessage(EVENTS.join_room)
+  handleJoinRoom(client: Socket, username: string) {
+    usernameStore.addUser(username, client.id);
+    client.join(this.roomName);
   }
 
-  @SubscribeMessage("event_message") //TODO Backend
-  handleIncommingMessage(client: Socket, payload: { room: string; message: string }) {
-    const { room, message } = payload;
-    console.log(payload);
-    this.server.to(`room_${room}`).emit("new_message", message);
+  @SubscribeMessage(EVENTS.send_message)
+  handleIncommingMessage(client: Socket, message: string) {
+    const username = usernameStore.getUsernameById(client.id);
+    this.server.to(this.roomName).emit(SOCKET_EVENT.new_message, `[${username}]: ${message}`);
   }
 
-  @SubscribeMessage("event_leave")
+  @SubscribeMessage(EVENTS.leave_room)
   handleRoomLeave(client: Socket, room: string) {
     console.log(`chao room_${room}`);
-    client.leave(`room_${room}`);
+    client.leave(this.roomName);
   }
 }
